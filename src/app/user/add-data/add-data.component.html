@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col s8 offset-s2">
+    <div class="card">
+     <!--  <div class="sm-jumbotron center-align">
+        <i class="material-icons ">account_circle</i>
+      </div> -->
+     
+      <form materialize class="col s12" #userDataForm="ngForm" (ngSubmit)="OnSubmit(userDataForm)">
+        <div class="row">
+          <div class="input-field col s6">
+            <input class="validate" type="text" name="forename" #forename="ngModel" [(ngModel)]="userData.forename" required>
+            <label data-error="Pole wymagane!">Imię</label>
+          </div>
+          <div class="input-field col s6">
+            <input class="validate" type="text" name="secondname" #secondname="ngModel" [(ngModel)]="userData.secondname" >
+            <label>Drugie imię</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input class="validate" type="text" name="lastname" #lastname="ngModel" [(ngModel)]="userData.lastname" required>
+            <label data-error="Pole wymagane!">Nazwisko</label>
+          </div>
+          <div class="input-field col s6">
+            <input type="text" name="familyname" #familyname="ngModel" [(ngModel)]="userData.familyname">
+            <label>Nazwisko rodowe</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6" >
+            <select materialize="material_select"  [(ngModel)]="userData.sex" name="sex" #sex="ngModel">
+              <option  *ngFor="let option of sexoptions" [value]="option.value" >
+                  {{option.value}}
+              </option> 
+            </select>
+            <label>Płeć</label>  
+          </div>
+          <div class="input-field col s6" >
+              <select materialize="material_select" [(ngModel)]="userData.citizenship" name="citizenship" #citizenship="ngModel" (ngModelChange)="onChange($event)">
+                <option  *ngFor="let option of citizenshipoptions" [value]="option.value">
+                    {{option.value}}
+                </option> 
+              </select>
+              <label>Narodowość</label>  
+            </div>
+         
+        </div> 
+        <div class="row">
+            <div class="input-field col s6">
+              <input class="validate" type="text" name="pesel" #pesel="ngModel" [(ngModel)]="userData.pesel" minlength="11" maxlength="11" required>
+              <label data-error="Niepoprawny pesel!">Pesel</label>
+            </div>
+            <div class="input-field col s6" >
+                <select materialize="material_select" [(ngModel)]="userData.education" name="education" #education="ngModel" >
+                  <option>Wybierz</option>
+                  <option  *ngFor="let option of educationOption" [value]="option.value">
+                      {{option.value}}
+                  </option> 
+                </select>
+                <label>Wykształcenie</label>  
+              </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+              <input #pickadate [materializeParams]="translateToPolish" materialize="pickadate" class="datepicker" type="text" name="dateofbirth" #dateofbirth="ngModel" [(ngModel)]="userData.dateofbirth" required>
+              <label data-error="Pole wymagane!">Data urodzenia</label>
+            </div>
+            <div class="input-field col s6">
+              <input type="text" name="phoneno" #phoneno="ngModel" [(ngModel)]="userData.phoneno">
+              <label>Nr telefonu</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+              <input type="text" name="street" #street="ngModel" [(ngModel)]="userData.street" required>
+              <label data-error="Pole wymagane!">Ulica</label>
+            </div>
+            <div class="input-field col s3">
+              <input type="number" name="housenumber" #housenumber="ngModel" [(ngModel)]="userData.housenumber" required>
+              <label data-error="Pole wymagane!">Nr domu</label>
+            </div>
+            <div class="input-field col s3">
+                <input type="number" name="local" #local="ngModel" [(ngModel)]="userData.local">
+                <label >Nr lokalu</label>
+              </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+              <input type="text" name="city" #city="ngModel" [(ngModel)]="userData.city" required>
+              <label data-error="Pole wymagane!">Miasto</label>
+            </div>
+            <div class="input-field col s6">
+              <input type="text" name="country" #country="ngModel" [(ngModel)]="userData.country">
+              <label>Kraj</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+              <button [disabled]="!userDataForm.valid" class="btn-large btn-submit" type="submit">Submit</button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
