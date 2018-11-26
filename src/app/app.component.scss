@@ -1,3 +1,22 @@
-.nav-wrapper{
-    width: auto;
+
+.nav-wrapper {
+    padding-left: 6em;
+    padding-right: 6em;
+    background-color: #00BCD4;
+  }
+  
+  .page-title {
+    font-size: 17px;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: .11em;
+    line-height: 1em;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page-footer {
+    clear: both;
+    position: relative;
+    height: 40px;
+    margin-top: -40px;
 }
+

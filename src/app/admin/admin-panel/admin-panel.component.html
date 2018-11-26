@@ -1,0 +1,184 @@
+<div class="row" style="padding-top:5px;">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#test1">Pacjent</a></li>
+        <li class="tab col s3"><a href="#medPers">Personel medyczny</a></li>
+        <li class="tab col s3"><a href="#admin">Admin</a></li>
+        <li class="tab col s3"><a href="#specialities">Inne</a></li>        
+      </ul>
+    </div>
+  </div>
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating red" (click)="add = !add"><i class="material-icons">add</i></a></li>
+      <li><a class="btn-floating yellow darken-1" (click)="edit = !edit"><i class="material-icons">create</i></a></li>
+      <li><a class="btn-floating green"><i class="material-icons" (click)="list = !list">list</i></a></li>
+      <li><a class="btn-floating blue"><i class="material-icons" (click)="delete = !delete">clear</i></a></li>
+    </ul>
+  </div>
+<!-- #region Admin --> 
+  <div class="row" id="admin">
+    <div class="col s8 offset-s4">
+      <div class="card">    
+        <div  class="col s8" >
+          <form class="col s12 white offset-s2" #newAdminForm="ngForm" (ngSubmit)="OnSubmitAdmin(newAdminForm)">
+            <div class="row">
+              <div class="input-field col s6">
+                <input class="validate" type="text" name="username" #username="ngModel" [(ngModel)]="admin.username" required>
+                <label data-error="Required field!">Login</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input class="validate" type="text" name="phoneno" #phoneno="ngModel" [(ngModel)]="admin.phoneno" required>
+                <label data-error="Invalid">Numer telefonu</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input class="validate" type="text" name="email" #email="ngModel" [(ngModel)]="admin.email" [pattern]="emailPattern">
+                <label data-error="Invalid email!">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6 center">
+                <button [disabled]="!newAdminForm.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
+              </div>
+            </div>
+          </form>          
+        </div>     
+      </div>
+    </div>
+  </div>
+  
+<!-- #endregion -->
+<!-- #region Appointment -->
+    <div id="appointment">      
+        <div  class="col s8 offset-s4" *ngIf="add">
+            <form class="col s12 white offset-s6" #newAdminForm="ngForm" (ngSubmit)="OnSubmitAdmin(newAddAppointmentForm)">
+                <div class="row">
+                  <div class="input-field col s6">
+                    <input class="validate" type="text" name="username" #username="ngModel" [(ngModel)]="admin.username" required>
+                    <label data-error="Required field!">Login</label>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input class="validate" type="text" name="phoneno" #phoneno="ngModel" [(ngModel)]="admin.phoneno" required>
+                        <label data-error="Invalid">Numer telefonu</label>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s6">
+                    <input class="validate" type="text" name="email" #email="ngModel" [(ngModel)]="admin.email" [pattern]="emailPattern">
+                    <label data-error="Invalid email!">Email</label>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 center">
+                      <button [disabled]="!newAdminForm.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
+                    </div>
+                </div>
+              </form>          
+        </div>
+      </div>
+<!-- #endregion -->
+<!-- #region Specialities -->
+<div class="row" id="specialities">
+  <div class="col s8 offset-s4">
+    <div class="card">  
+      <div  class="col s12" >
+        <form class="col s12 white" #specForm="ngForm" (ngSubmit)="OnSubmitSpec(specForm)">
+            <div class="row">
+              <div class="input-field col s6">
+                <input class="validate" type="text" name="name" #name="ngModel" [(ngModel)]="spec.name">
+                <label >Nazwa specjalności lekarskiej</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6 center">
+                <button class="waves-effect waves-light btn" type="submit">Dodaj</button>
+              </div>
+            </div>
+        </form>          
+      </div>
+      <div class="input-field col s6" *ngIf="specLoaded" >
+        <select materialize="material_select" >
+          <option  *ngFor="let option of specList" [value]="option" >
+            {{option}}
+          </option> 
+        </select>
+        <label>Specjalności</label>  
+      </div>
+    </div>
+  </div>
+</div> 
+<!--  #endregion    -->  
+      
+<!-- #region medPers -->     
+    <div class="row" id="medPers">
+        <div class="col s8 offset-s2">
+          <div class="card">  
+              <div class="progress" *ngIf="showLoad">
+                  <div class="indeterminate"></div>
+              </div>     
+        <form class="col s12 white" #newMedicalPersonelForm="ngForm" (ngSubmit)="OnSubmitMedicalPersonel(newMedicalPersonelForm)">
+            <div class="row"> 
+                  <div class="input-field col s6" >
+                    <select materialize="material_select" [(ngModel)]="medicalPersonel.accesstype" name="accesstype" #accesstype="ngModel" (ngModelChange)="onChange($event)" required>
+                      <option>Wybierz</option>
+                      <option  *ngFor="let option of medicalPersonelOptions" [value]="option.value">
+                          {{option.name}}
+                      </option> 
+                    </select>
+                    <label>Typ konta</label>  
+                  </div> 
+                  <div class="input-field col s6">
+                      <input class="validate" type="text" name="username" #username="ngModel" [(ngModel)]="medicalPersonel.username" required>
+                      <label data-error="Required field!">Login</label>
+                  </div>
+            </div>   
+            <div class="row" *ngIf="showSpecialityOptions">
+                <div class="input-field col s12"  >
+                    <select materialize="material_select" [(ngModel)]="medicalPersonel.speciality" name="speciality" #speciality="ngModel" required>
+                      <option  *ngFor="let option of specList" [value]="option" >
+                          {{option}}
+                      </option> 
+                    </select>
+                    <label>Specjalności</label>  
+                </div>
+            </div>        
+            <div class="row">
+                <div class="input-field col s6">
+                  <input class="validate" type="text" name="forename" #forename="ngModel" [(ngModel)]="medicalPersonel.forename" required>
+                  <label data-error="Required field!">Imię</label>
+                </div>
+                <div class="input-field col s6">
+                    <input class="validate" type="text" name="lastname" #lastname="ngModel" [(ngModel)]="medicalPersonel.lastname" required>
+                    <label data-error="Required field!">Nazwisko</label>
+                  </div>
+              </div>
+          <div class="row">              
+              <div class="input-field col s6">
+                  <input class="validate" type="text" name="email" #email="ngModel" [(ngModel)]="medicalPersonel.email" [pattern]="emailPattern" required>
+                  <label data-error="Invalid email!">Email</label>
+              </div>
+              <div class="input-field col s6">
+                  <input class="validate" type="text" name="phoneno" #phoneno="ngModel" [(ngModel)]="medicalPersonel.phoneno" required>
+                  <label data-error="Invalid">Numer telefonu</label>
+              </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 center">
+                  <button [disabled]="!newMedicalPersonelForm.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
+                </div>
+            </div>
+          </form>                 
+    </div>     
+  </div>
+  </div>  
+<!-- #endregion -->
+      

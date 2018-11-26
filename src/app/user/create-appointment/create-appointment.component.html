@@ -1,0 +1,54 @@
+  <!-- #region addappointment -->
+  <div>
+      <a (click)="navigate('addappointmentShow')">MENU</a>
+      <div class="row">
+          <div class="input-field col s6">
+            <input #pickadate [materializeParams]="translateToPolish" materialize="pickadate" class="datepicker" type="text" >
+            <label data-error="Pole wymagane!">Data urodzenia</label>
+          </div>
+      </div>
+  </div>
+  <!-- #endregion -->
+  <div class="row" id="medPers">
+      <div class="col s8 offset-s2">
+        <div class="card">  
+            <div class="progress" *ngIf="showLoad">
+                <div class="indeterminate"></div>
+            </div>     
+      <form class="col s12 white" #newAppointment="ngForm" (ngSubmit)="OnSubmit(newAppointment)">
+          <div class="row"> 
+                <div class="input-field col s6" >
+                  <select materialize="material_select" [(ngModel)]="appointmentModel.medicusername" name="medicusername" #medicusername="ngModel" required>
+                    <option>Wybierz</option>
+                    <option  *ngFor="let option of doctors" [value]="option.username">
+                        {{option.forename}} {{option.lastname}}
+                    </option> 
+                  </select>
+                  <label>Lekarz</label>  
+                </div> 
+          </div>   
+         <!--  <div class="row" >
+              <div class="input-field col s12"  >
+                  <select materialize="material_select" required>
+                    <option  *ngFor="let option of specList" [value]="option" >
+                        {{option}}
+                    </option> 
+                  </select>
+                  <label>Specjalności</label>  
+              </div>
+          </div>   -->
+          <div class="row">
+              <div class="input-field col s6">
+                <input #pickadate [materializeParams]="translateToPolish" materialize="pickadate" class="datepicker" type="text" name="date" #date="ngModel" [(ngModel)]="appointmentModel.date" required>
+                <label data-error="Pole wymagane!">Data </label>
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s12 center">
+                <button [disabled]="!newAppointment.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
+              </div>
+          </div>
+        </form>                 
+  </div>     
+</div>
+</div>  

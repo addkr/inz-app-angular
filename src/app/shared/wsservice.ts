@@ -26,15 +26,23 @@ export class wsService {
          withCredentials: false,
          headers: myHeaders
         })   
-    var response = this.http.post(url,body, opt).subscribe((success)=> {
-        console.log("error: "+success);
-    },
-    (error) => {
-      console.log("error: "+error);
-       
-    })    
-    return response;
+    return this.http.post(url,body, opt);
 }    
+
+  getData(url){
+    let opt: RequestOptions
+       let myHeaders: Headers = new Headers
+       myHeaders.set('Content-type', 'application/json');
+       myHeaders.append('Access-Control-Allow-Headers', 'Content-type, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers');
+       myHeaders.append('Access-Control-Allow-Methods', '*');
+       myHeaders.append('Access-Control-Allow-Origin', '*');
+       myHeaders.append('No-Auth','True');
+       opt = new RequestOptions({
+         withCredentials: false,
+         headers: myHeaders
+        })   
+    return this.http.get(url,opt);
+  }
   
 
 } 

@@ -16,7 +16,8 @@ export class UserPersonalData {
     city: string;
     country: string;
     datecreated: string;
-    userName: string
+    username: string;
+    accesstype: string;
 }
 
 export class User {
@@ -25,7 +26,9 @@ export class User {
     Email: string;
 }
 
-export class UserName {
-    userName: string;
+
+export class AccessType{
+    username: string;
+    accesstype: string;
 }
 

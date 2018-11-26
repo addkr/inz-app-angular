@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { User, UserPersonalData, UserName } from './user.model';
+import { User, UserPersonalData, AccessType } from './user.model';
 import { Observable, of, Subject } from 'rxjs';
 
 @Injectable({
@@ -38,11 +38,14 @@ export class UserService {
     return  this.http.get(this.endpoint+'/api/CheckUserData', { headers: reqHeader });
    } */
 
-   CheckUserData(username) {
-    const body: UserName = {
-      userName: username
+   CheckUserData(accesstype,username) {
+    const body: AccessType = {
+      username: username,
+      accesstype: accesstype
     }; 
-    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True' });
+    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(this.endpoint + '/api/CheckUserData', body, { headers: reqHeader });
   }
+
+
 }

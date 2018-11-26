@@ -5,7 +5,7 @@ import { SharedResources } from 'src/app/shared/sharedResources';
 import { UserService } from '../../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { wsService } from '../../shared/wsservice';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-data',
   templateUrl: './add-data.component.html',
@@ -20,7 +20,7 @@ export class AddDataComponent implements OnInit {
   citizenshipoptions = this.shared.citizenshipoptions;
   sexoptions = this.shared.sexoptions;
 
-  constructor(private userService: UserService, private toastr: ToastrService, private wsservice: wsService) { }
+  constructor(private router: Router, private userService: UserService, private toastr: ToastrService, private wsservice: wsService) { }
 
   ngAfterViewInit(){
   }
@@ -29,15 +29,6 @@ export class AddDataComponent implements OnInit {
     this.resetForm();
     
   }
-
-/*   CheckUserData(){
-    this.userService.CheckUserData().subscribe((data: any) => {
-      console.log(data);
-
-    }, (error) => {
-      console.log(error);
-    });
-  } */
 
   onChange(value){
     if(value == "Inna"){
@@ -68,7 +59,8 @@ export class AddDataComponent implements OnInit {
     city:'',
     country:'',
     datecreated:'',
-    userName: ''
+    username: '',
+    accesstype: ''
     }
   }
 
@@ -84,7 +76,7 @@ export class AddDataComponent implements OnInit {
       education: this.userData.education,
       pesel: this.userData.pesel,
       dateofbirth: this.userData.dateofbirth,
-      email: "email",
+      email: localStorage.getItem("Email"),
       phoneno: this.userData.phoneno,
       street: this.userData.street,
       housenumber: this.userData.housenumber,
@@ -92,9 +84,45 @@ export class AddDataComponent implements OnInit {
       city: this.userData.city,
       country: this.userData.country,
       datecreated: new Date().toLocaleString().toString(),
-      userName : ''
+      username : localStorage.getItem("UserName"),
+      accesstype: "patient"
     }
-    this.wsservice.postData(body, "http://localhost:52084/patients/Create");
+    this.wsservice.postData(body, "http://localhost:52084/patients/Create").subscribe((data) => {
+        console.log(data);
+        this.router.navigate(['/home']);
+    }, (error) => {
+        console.log(error);
+    });
+    
   }
+
+  getUserData(){
+  
+    this.userService.getUserClaims().subscribe((data: any) => {
+       localStorage.setItem('UserName',data.UserName);
+       localStorage.setItem('Email',data.Email);
+       //this.CheckUserData(data["UserName"]);
+    });
+    
+   }
+
+  /* CheckUserData(username){
+    this.userService.CheckUserData(username).subscribe((data: any) => {
+      console.log(data);
+      if(data==""){
+        console.log("Brak danych użytkownika");
+        this.router.navigate(['/addData']);
+      }else{
+        this.router.navigate(['/home']);
+      }
+      //this.router.navigate(['/home']);
+    }, (error) => {
+      console.log(error);
+      if(error=="Dane mają wartość Null. Ta metoda lub właściwość nie może być wywołana na wartościach zerowych."){
+        console.log("Użytkownik nie istnieje lub wprowadzone dane są niepoprawne");
+        //this.router.navigate(['/addData']);
+      }
+    });
+  }  */
   
 }

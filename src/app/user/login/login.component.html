@@ -1,22 +1,45 @@
-<div *ngIf="isLoginError" class="red-text center error-message">
-  <i class="material-icons">error</i> Incorrect username or password
-</div>
-<form #loginForm="ngForm" class="col s12 white" (ngSubmit)="OnSubmit(UserName.value,Password.value)">
- <div class="row">
-   <div class="input-field col s12">
-     <i class="material-icons prefix">account_circle</i>
-     <input type="text" #UserName ngModel name="UserName" placeholder="Username" required>
-   </div>
- </div>
- <div class="row">
-    <div class="input-field col s12">
-      <i class="material-icons prefix">vpn_key</i>
-      <input type="password" #Password ngModel name="Password" placeholder="Password" required>
-    </div>
-  </div>
-  <div class="row">
-      <div class="input-field col s12">
-        <button [disabled]="!loginForm.valid" class="btn-large btn-submit" type="submit">Login</button>
+<div class="row">
+  <div class="col s8 offset-s4">
+    <div class="row">
+        <div *ngIf="isLoginError" class="red-text center error-message">
+            {{message}}
+        </div>
+    </div>     
+    <div class="card white-grey">      
+      <form #loginForm="ngForm" class="col s12 white" (ngSubmit)="OnSubmit(loginForm)">
+          <div class="row"> 
+              <div class="input-field col s6" >
+                <select materialize="material_select" [(ngModel)]="accessType.accesstype" name="accesstype" #accesstype="ngModel"  required>
+                  <option>Wybierz</option>
+                  <option  *ngFor="let option of loginOptions" [value]="option.value" >
+                      {{option.name}}
+                  </option> 
+                </select>
+                <label>Typ konta</label>  
+              </div> 
+          </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input type="text" #UserName ngModel name="UserName" placeholder="Login" required>
+          </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+              <input type="password" #Password ngModel name="Password" placeholder="Hasło" required>
+            </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6 center">
+                <button [disabled]="!loginForm.valid" class="waves-effect waves-light btn" type="submit">zaloguj</button>
+              </div>      
+          </div>
+      </form>
+      <div class="input-field col s6 center">
+        <button  class="waves-effect waves-light btn" >pomoc</button>
       </div>
     </div>
-</form>
+  </div>
+</div>
+<div class="progress" *ngIf="showLoad">
+  <div class="indeterminate"></div>
+</div>

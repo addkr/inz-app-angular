@@ -1,6 +1,7 @@
 export class SharedResources{
 
-   translateToPolish = [{format:'dd/mm/yyyy', selectYears: 130, selectMonths: true, max: true, 
+    endpoint = "http://localhost:52084/";
+   translateToPolish = [{format:'yyyy-mm-dd', selectYears: 130, selectMonths: true, max: true, 
   monthsFull: [ 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
   'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień' ] ,
   monthsShort: [ 'Sty.', 'Lu.', 'Ma.', 'Kwi.', 'Maj', 'Cze.', 'Lip.', 'Sie.', 'Wrz.', 'Paź.', 'Lis.', 'Gru.' ],
@@ -15,6 +16,7 @@ export class SharedResources{
 
     citizenshipoptions = [{'value': 'Polska'},{'value': 'Inna'}];
     sexoptions = [{'value':'M'},{'value':'K'},{'value':'Inne'}];
-
+    loginOptions =  [{'name':'Pielęgniarka/położna','value':'nurse'},{'name':'Lekarz','value':'doctor'},{'name':'Pracownik recepcji','value':'reception'},{'name':'Pacjent','value':'patient'},{'name':'Administrator','value':'admin'}];
+    medicalPersonel = [{'name':'Pielęgniarka/położna','value':'nurse'},{'name':'Lekarz','value':'doctor'},{'name':'Pracownik recepcji','value':'reception'}];
 }
 

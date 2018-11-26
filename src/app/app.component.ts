@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,9 +8,14 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'AngularApp';
-
+  authorized: boolean = false;
   constructor(private router: Router){
     this.router.navigate(['home']);
+  }
+ 
+  logout(){
+    localStorage.removeItem('userToken');
+    this.router.navigate(['publicpage']);
   }
 
   selected(input){

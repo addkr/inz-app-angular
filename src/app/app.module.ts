@@ -17,13 +17,26 @@ import { EventSchedulerComponent } from './event-scheduler/event-scheduler.compo
 import { AddDataComponent } from './user/add-data/add-data.component';
 import { HttpModule } from '@angular/http';
 import { MaterializeModule } from 'angular2-materialize';
+import { PublicPageComponent } from './public-page/public-page.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { DoctorPanelComponent } from './medicalPersonel/doctor-panel/doctor-panel.component';
+import { NursePanelComponent } from './medicalPersonel/nurse-panel/nurse-panel.component';
+import { ReceptionPanelComponent } from './medicalPersonel/reception-panel/reception-panel.component';
+import { CreateAppointmentComponent } from './user/create-appointment/create-appointment.component';
 
-const appRoutes: Routes = [{path: 'register', component: RegisterComponent},
+const appRoutes: Routes = 
+[{path: 'register', component: RegisterComponent},
 {path: 'login', component: LoginComponent},
 {path: 'home', component: HomePageComponent, canActivate:[AuthGuard]},
 { path : '', redirectTo:'/home', pathMatch : 'full'},
 {path:'scheduler', component: EventSchedulerComponent},
-{path: 'addData', component: AddDataComponent}]
+{path: 'addData', component: AddDataComponent},
+{path: 'publicpage', component: PublicPageComponent},
+{path: 'adminpanel',component: AdminPanelComponent},
+{path: 'doctorpanel',component: DoctorPanelComponent},
+{path: 'nursepanel',component: NursePanelComponent},
+{path: 'receptionpanel',component: ReceptionPanelComponent},
+{path: 'appointment',component: CreateAppointmentComponent}]
 
 @NgModule({
   declarations: [
@@ -33,7 +46,13 @@ const appRoutes: Routes = [{path: 'register', component: RegisterComponent},
     LoginComponent,
     HomePageComponent,
     EventSchedulerComponent,
-    AddDataComponent
+    AddDataComponent,
+    PublicPageComponent,
+    AdminPanelComponent,
+    DoctorPanelComponent,
+    NursePanelComponent,
+    ReceptionPanelComponent,
+    CreateAppointmentComponent
   ],
   imports: [
     RouterModule.forRoot(
