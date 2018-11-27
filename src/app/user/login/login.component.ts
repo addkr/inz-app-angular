@@ -6,6 +6,8 @@ import { AccessType } from 'src/app/shared/user.model';
 import { ErrorModel } from '../../shared/error-model';
 import { SharedResources } from 'src/app/shared/sharedResources';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
   shared = new SharedResources();
   loginOptions = this.shared.loginOptions;
   accessType = new AccessType();
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
@@ -51,14 +53,22 @@ export class LoginComponent implements OnInit {
      
   CheckUserData(accesstype,username){
     this.userService.CheckUserData(accesstype,username).subscribe((data: any) => {
-      var json = JSON.parse(data);
-      this.navigate(json.accesstype);
+      console.log(data)
+      if(data==""){
+        this.toastr.success('Zarejestrowano nowego użytkownika');
+      }else{
+        
+        var json = JSON.parse(data);
+        this.navigate(json.accesstype);
+      }
+      
      
     }, (error) => {
       console.log(error);
       if(error=="Dane mają wartość Null. Ta metoda lub właściwość nie może być wywołana na wartościach zerowych."){
         console.log("Użytkownik nie istnieje lub wprowadzone dane są niepoprawne");
         //this.router.navigate(['/addData']);
+        this.toastr.error(error.Errors[0]);
       }
     });
   } 

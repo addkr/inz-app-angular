@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'AngularApp';
   authorized: boolean = false;
   constructor(private router: Router){
-    this.router.navigate(['home']);
+    this.router.navigate(['/adminpanel']);
   }
  
   logout(){

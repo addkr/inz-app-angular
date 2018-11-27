@@ -1,7 +1,7 @@
 export class SharedResources{
 
     endpoint = "http://localhost:52084/";
-   translateToPolish = [{format:'yyyy-mm-dd', selectYears: 130, selectMonths: true, max: true, 
+   translateToPolish = [{format:'yyyy-mm-dd', selectYears: 130, selectMonths: true,  
   monthsFull: [ 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
   'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień' ] ,
   monthsShort: [ 'Sty.', 'Lu.', 'Ma.', 'Kwi.', 'Maj', 'Cze.', 'Lip.', 'Sie.', 'Wrz.', 'Paź.', 'Lis.', 'Gru.' ],
@@ -12,6 +12,7 @@ export class SharedResources{
 	clear: 'Anuluj',
     close: 'Ok'}];
 
+    translateTimePicker = [{format:'hh:mm:ss',twelvehour: false,cleartext:'Wyczyść',canceltext:'Anuluj',donetext:'Ok'}];
     educationOption = [{'value':'podstawowe'},{'value':'gimnazjalne'},{'value':'zawodowe'},{'value':'średnie'},{'value':'wyższe'},{'value':'brak'}]
 
     citizenshipoptions = [{'value': 'Polska'},{'value': 'Inna'}];

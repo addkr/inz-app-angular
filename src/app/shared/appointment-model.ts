@@ -5,3 +5,14 @@ export class AppointmentModel {
     medicusername: string;
     description: string;
 }
+
+export class DateTimeModel{
+    date: string;
+    time: string;
+}
+
+export class AppointmentInfo{
+    date: string;
+    doctorforename: string;
+    doctorlastname: string;
+}

@@ -61,7 +61,16 @@
   <!-- #endregion -->
   <!-- #region lastappointments -->
   <div id="lastappointments" *ngIf="lastappointmentsShow">
-      <a (click)="navigate('lastappointmentsShow')">MENU</a>
+      <div class="row" id="medPers">
+          <div class="col s8 offset-s2">
+            <div class="card"> 
+              <a (click)="goTo('lastappointmentsShow')">MENU</a>
+              <ul class="collection" *ngFor="let option of lastappointments" >
+                  <li class="collection-item">Data: {{option.date}} Lekarz: {{option.doctorforename}} {{option.doctorlastname}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
   </div>
   <!-- #endregion -->
   <router-outlet></router-outlet>

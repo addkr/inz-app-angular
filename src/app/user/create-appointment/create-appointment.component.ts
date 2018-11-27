@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedResources } from 'src/app/shared/sharedResources';
 import { Router } from '@angular/router';
 import { wsService } from '../../shared/wsservice';
-import { AppointmentModel } from 'src/app/shared/appointment-model';
+import { AppointmentModel, DateTimeModel } from 'src/app/shared/appointment-model';
 import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-create-appointment',
@@ -12,11 +12,14 @@ import { NgForm } from '@angular/forms';
 export class CreateAppointmentComponent implements OnInit {
 
   shared = new SharedResources();
-  translateToPolish = this.shared.translateToPolish
+  translateToPolish = this.shared.translateToPolish;
+  translateTimePicker = this.shared.translateTimePicker;
   router: Router;
   doctors = [];
   private endpoint = this.shared.endpoint;
   appointmentModel = new AppointmentModel();
+  dateTimeModel = new DateTimeModel();
+  showLoad = false;
   constructor(private wsservice: wsService) {
     this.getDoctors();
    }
@@ -35,16 +38,29 @@ export class CreateAppointmentComponent implements OnInit {
       medicusername: '',
       description: ''
     }
+    this.dateTimeModel = {
+      date: '',
+      time: ''
+    }
   }
 
   OnSubmit(newAppointment:NgForm){
+    this.showLoad = true;
     var body: AppointmentModel = {
       datecreated: new Date().toLocaleString().toString(),
-      date: this.appointmentModel.date,
-      patientusername: localStorage.getItem("UserName"),
+      date: this.dateTimeModel.date + ", " + this.dateTimeModel.time,
+      patientusername: "admintest",
       medicusername: this.appointmentModel.medicusername,
       description: 'brak'
     }
+    console.log(body)
+    this.wsservice.postData(body,this.endpoint+"appointments/Create").subscribe((success)=>{
+      this.showLoad = false;
+      console.log(success)
+    },(error)=>{
+      console.log(error)
+      this.showLoad = false;
+    })
   }
 
   getDoctors(){
