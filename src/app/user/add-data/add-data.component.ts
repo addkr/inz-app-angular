@@ -34,6 +34,13 @@ export class AddDataComponent implements OnInit {
 
   ngAfterViewInit(){
   }
+  logout(){
+    if(confirm("Czy chcesz się wylogować?")){
+      localStorage.removeItem("userToken");
+      this.router.navigate(["/publicpage"]);
+    }
+  }
+  
 
   ngOnInit() {
     this.resetForm();

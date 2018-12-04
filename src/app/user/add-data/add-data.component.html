@@ -1,3 +1,14 @@
+<div class="row" style="padding-top:5px;" *ngIf="reception">
+    <div class="nav-content">
+      <div class="col s12">
+        <ul class="tabs" materialize="tabs">
+          <li class="tab col s3"><a routerLink='/receptionpanel' routerLinkActive='active'>Panel recepcji</a></li>
+          <li class="tab col s3"  (click)="logout()"><a >Wyloguj</a></li>       
+        </ul>
+      </div>
+    </div>
+  </div>
+
 <!-- progressbar -->
 <div class="row">
   <div class="col s8 offset-s2" *ngIf="showLoad">

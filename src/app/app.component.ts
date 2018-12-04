@@ -1,5 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,25 +6,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'AngularApp';
-  authorized: boolean = false;
-  constructor(private router: Router){
-    //this.router.navigate(['/patientpanel']);
+  title = 'Aplikacja dla przychodni lekarskiej';
+  constructor(){
+    //localStorage.removeItem("userToken");
   }
  
-  logout(){
-    localStorage.removeItem('userToken');
-    this.router.navigate(['publicpage']);
-  }
-
-  selected(input){
-    switch(input){
-     case 'register':
-       this.router.navigate(['register']);
-       break;
-     case 'login':
-       this.router.navigate(['loginService']);
-       break;
-    }
-}
 }

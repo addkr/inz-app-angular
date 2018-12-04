@@ -40,7 +40,7 @@
         <div class="col s8 offset-s2">
             <div class="row" >
                 <ul class="collection" *ngFor="let option of lastappointments" >
-                    <li class="collection-item">
+                    <a class="collection-item">
                       <div>
                         <label><span>Data: </span> {{option.date}} </label>
                         <label><span>Status: </span> {{option.description}} </label>
@@ -50,15 +50,13 @@
                       </div>
                       <div>
                           Pacjent:  {{patientForeName}} {{patientLastName}} 
+                          <span class="new badge red" data-badge-caption="ODWOŁAJ" (click)="cancel(option.id,option.usdate,option.date,option.description)"></span>
+                          <span class="new badge green" data-badge-caption="POTWIERDŹ" (click)="confirm(option.id,option.usdate,option.date,option.description)"></span>
                       </div> 
-                      <div>
-                          <a (click)="cancel(option.id,option.usdate,option.date,option.description)" class="secondary-content" style="color:#ff2010">| ODWOŁAJ </a>
-                          <a (click)="confirm(option.id,option.usdate,option.date,option.description)" class="secondary-content" > POTWIERDŹ |</a>
-                      </div>
-                    </li>
+                    </a>
                 </ul>
                 <ul class="collection" *ngFor="let appointmentnurse of lastappointmentsnurse" >
-                        <li class="collection-item">
+                        <a class="collection-item">
                           <div>
                             <label><span>Data: </span> {{appointmentnurse.date}} </label>
                             <label><span>Status: </span> {{appointmentnurse.description}} </label>
@@ -67,10 +65,11 @@
                               {{appointmentnurse.speciality}} {{appointmentnurse.doctorforename}} {{appointmentnurse.doctorlastname}} 
                           </div>
                           <div>
-                              <a (click)="cancel(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)" class="secondary-content" style="color:#ff2010">| ODWOŁAJ </a>
-                              <a (click)="confirm(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)" class="secondary-content" > POTWIERDŹ |</a>
-                          </div>
-                        </li>
+                                Pacjent:  {{patientForeName}} {{patientLastName}} 
+                                <span class="new badge red" data-badge-caption="ODWOŁAJ" (click)="cancel(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)"></span>
+                                <span class="new badge green" data-badge-caption="POTWIERDŹ" (click)="confirm(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)"></span>
+                        </div>
+                        </a>
                 </ul>
               </div>
         </div>

@@ -57,8 +57,7 @@ const appRoutes: Routes =
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     HttpModule,
-    MaterializeModule,
-    PopupModule.forRoot()
+    MaterializeModule
   ],
   providers: [UserService, ,AuthGuard,
     ,

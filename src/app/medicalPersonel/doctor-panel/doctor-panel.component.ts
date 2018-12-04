@@ -5,6 +5,7 @@ import { SharedResources } from 'src/app/shared/sharedResources';
 import { DateTimeModel } from 'src/app/shared/appointment-model';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-doctor-panel',
@@ -25,10 +26,14 @@ export class DoctorPanelComponent implements OnInit {
   lastAppointments = [];
   private endpoint = this.shared.endpoint;
 
-  constructor(private wsservice: wsService, private router: Router) { 
+  constructor(private wsservice: wsService, private router: Router, private toastr: ToastrService) { 
     this.getPatients();
     this.getFreeTerms();
     this.getAppointments();
+  }
+
+  showToast(){
+    this.toastr.success('Funkcja chwilowo niedostępna');
   }
 
   logout(){
@@ -41,28 +46,31 @@ export class DoctorPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  cancel(id,date){
-    if(new Date(date).getTime() <= Date.now()){
-      console.log("confirm")
-      if(confirm("Czy chcesz odwołać wizytę z dnia "+date + "?")) {
-        var body = {
-          edit : false,
-          date : "",
-          confirmed : "NIE",
-          description: "Odwołana",
-          id : id
-        }
-        this.wsservice.postData(body,this.endpoint+"api/UpdateAppointment").subscribe((success)=>{
-          console.log(success)
-          this.getAppointments();
+  cancel(id,usdate,date,status){    
+    if(new Date(usdate).getTime() > Date.now() && status == "brak"){
+        console.log(status)
+        if(confirm("Czy chcesz odwołać wizytę z dnia "+date + "?")) {
+          var body = {
+            edit : false,
+            date : "",
+            confirmed : "NIE",
+            description: "Odwołana",
+            id : id
+          }
+          this.wsservice.postData(body,this.endpoint+"api/UpdateAppointment").subscribe((success)=>{
+            console.log(success)
           this.lastAppointments = [];
           this.getAppointments();
-        },(error)=>{
-          console.log(error)
-        })
+          },(error)=>{
+            console.log(error)
+          })
       }
-    }    
-  }
+      }else if(status == "Odwołana"){
+        confirm("Wizyta jest już odwołana");
+      }
+  }   
+
+  
 
   deleteFreeTerm(date, id){
     if(confirm("Czy chcesz usunąć termin " + date +" ?")){
@@ -98,6 +106,8 @@ export class DoctorPanelComponent implements OnInit {
         if(this.lastAppointments[i].patientusername == this.patients[j].username){
           this.lastAppointments[i].patientforename = this.patients[j].forename;
           this.lastAppointments[i].patientlastname = this.patients[j].lastname;
+          this.lastAppointments[i].usdate = this.lastAppointments[i].date;
+          this.lastAppointments[i].date = new Date(this.lastAppointments[i]["date"]).toLocaleString();
         }
       }
     }

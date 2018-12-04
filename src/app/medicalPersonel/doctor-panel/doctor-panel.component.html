@@ -4,8 +4,7 @@
       <ul class="tabs" materialize="tabs">
         <li class="tab col s3"><a href="#lastappointments">Historia wizyt</a></li>
         <li class="tab col s3"><a href="#appointments">Plan wizyt</a></li>
-        <li class="tab col s3"><a href="#patients">Pacjenci</a></li>
-        <li class="tab col s3"><a href="#specialities" disabled>Dokumentacja</a></li>  
+        <li class="tab col s3"><a href="#patients">Pacjenci</a></li> 
         <li class="tab col s3"  (click)="logout()"><a >Wyloguj</a></li>       
       </ul>
     </div>
@@ -24,7 +23,7 @@
         <div class="col s8 offset-s2">
           <div class="row" >
               <ul class="collection" *ngFor="let option of lastAppointments" >
-                  <li class="collection-item">
+                  <a class="collection-item">
                     <div>
                       <label><span>Data: </span> {{option.date}} </label>
                       <label><span>Status: </span> {{option.description}} </label>
@@ -34,12 +33,9 @@
                     </div>
                     <div>
                         Pacjent:  {{option.patientforename}} {{option.patientlastname}} 
+                        <span class="new badge red " data-badge-caption="ODWOŁAJ" (click)="cancel(option.id,option.usdate,option.date,option.description)" ></span>
                     </div> 
-                    <div>
-                        <a (click)="cancel(option.id,option.date)" class="secondary-content" style="color:#ff2010">| ODWOŁAJ </a>
-                        <a (click)="confirm(option.id,option.date)" class="secondary-content" > POTWIERDŹ |</a>
-                    </div>
-                  </li>
+                  </a>
               </ul>
             </div>
       </div>
@@ -49,69 +45,57 @@
 
 <!-- #region patients -->
 <div class="row" id="patients">      
-    <div class="col s8 offset-s4">
-      <div class="card">     
-        <div  class="col s8" >
+    <div class="col s6 offset-s3">    
             <ul class="collection" *ngFor="let patient of patients">
-                <li class="collection-item">{{patient.forename}} {{patient.lastname}}
-                <a class="secondary-content"><i class="material-icons ">email</i></a>
-              </li>
-            </ul>        
-        </div>     
-      </div>
+                <a class="collection-item ">{{patient.forename}} {{patient.lastname}}
+                    <span class="new badge green " data-badge-caption="POKAŻ" (click)="showToast()" ></span>
+                  </a> 
+            </ul>  
     </div>
   </div>
 <!-- #endregion -->
 
 <!-- #region appointments -->
 <div class="row" id="appointments">
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green">
-          <i class="large material-icons">mode_edit</i>
-        </a>
-        <ul>
-          <li><a class="btn-floating blue" (click)="add = true"><i class="material-icons">add</i></a></li>
-          <li><a class="btn-floating yellow darken-1" (click)="add = false"><i class="material-icons">dehaze</i></a></li>
-        </ul>
-      </div>
     <!-- #region add -->
-  <div class="row" *ngIf="add">      
-    <div class="col s12 " >
-      <div class="card">              
-          <form class="col s12 white offset-s3" #newFreeTermForm="ngForm" (ngSubmit)="OnSubmitFreeTerm(newFreeTermForm)">
-            <div class="row ">
-              <div class="input-field col s3">
-                <input #pickadate [materializeParams]="translateDatePicker" materialize="pickadate" class="datepicker" type="text" [(ngModel)]="dateTimeModel.date" name="date" #date="ngModel" required>
-                <label data-error="Pole wymagane!">Dzień</label>
-              </div>
-              <div class="input-field col s3">
-                <input #pickatime [materializeParams]="translateTimePicker" materialize="pickatime" class="timepicker" type="text" [(ngModel)]="dateTimeModel.time" name="time" #time="ngModel" required>
-                <label data-error="Pole wymagane!">Godzina</label>
-              </div>
-            </div>           
-            <div class="row">
-              <div class="input-field col s6 center">
-                <button [disabled]="!newFreeTermForm.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
-              </div>
-            </div>
-          </form>     
+    <div class="row" >      
+        <div class="col s12 " >
+          <div class="card">              
+              <form class="col s12 white" #newFreeTermForm="ngForm" (ngSubmit)="OnSubmitFreeTerm(newFreeTermForm)">
+                <div class="row ">
+                  <div class="input-field col s4 offset-s2">
+                    <input #pickadate [materializeParams]="translateDatePicker" materialize="pickadate" class="datepicker" type="text" [(ngModel)]="dateTimeModel.date" name="date" #date="ngModel" required>
+                    <label data-error="Pole wymagane!">Dzień</label>
+                  </div>
+                  <div class="input-field col s4 ">
+                    <input #pickatime [materializeParams]="translateTimePicker" materialize="pickatime" class="timepicker" type="text" [(ngModel)]="dateTimeModel.time" name="time" #time="ngModel" required>
+                    <label data-error="Pole wymagane!">Godzina</label>
+                  </div>
+                </div>           
+                <div class="row">
+                  <div class="input-field col s6 offset-s5">
+                    <button [disabled]="!newFreeTermForm.valid" class="btn-large btn-submit" type="submit">Dodaj</button>
+                  </div>
+                </div>
+              </form>     
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
   <!-- #endregion -->
 
   <!-- #region freeTerms -->
-  <div class="row" *ngIf="!add">      
-      <div class="col s8 offset-s4">
-        <div class="card">     
-          <div  class="col s8" >
-              <ul class="collection" *ngFor="let term of freeTerms">
-                  <li class="collection-item">{{term.date}}
-                  <a (click)="deleteFreeTerm(term.date, term.id)" class="secondary-content"><i class="material-icons ">delete</i></a>
-                </li>
-              </ul>        
-          </div>     
-        </div>
+  <div class="row center-align" >    
+      <div class="card s10 m8 center-align">            
+          <div class="col s4 m2 " *ngFor="let term of freeTerms"> 
+              <div class="row">
+                    <div class="card" id="panel">
+                        <a class="btn-floating halfway-fab waves-effect waves-light red" (click)="deleteFreeTerm(term.date, term.id)"><i class="material-icons">delete</i></a>
+                        <div class="card-content">
+                        <p>{{term.date}}</p>
+                      </div>
+                    </div>
+                </div>      
+          </div>
       </div>
     </div>
   <!-- #endregion -->

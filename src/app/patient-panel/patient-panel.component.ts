@@ -110,6 +110,7 @@ export class PatientPanelComponent implements OnInit {
   }  
  
   createAppointmentsList(){
+    this.lastappointments = [];
     for (var j = 0 ; j < this.appointmentsList.length ; j++){
       for(var i = 0 ; i < this.doctors.length ; i++){     
         if(this.doctors[i].username == this.appointmentsList[j].doctorusername){
@@ -130,6 +131,7 @@ export class PatientPanelComponent implements OnInit {
   }
 
   createAppointmentsListNurse(){
+    this.lastappointmentsnurse = [];
     for (var j = 0 ; j < this.appointmentsList.length ; j++){
       for(var i = 0 ; i < this.nurses.length ; i++){     
         if(this.nurses[i].username == this.appointmentsList[j].doctorusername){
@@ -149,6 +151,7 @@ export class PatientPanelComponent implements OnInit {
   }
 
   getAppointments(){
+    this.appointmentsList = [];
     var body = {
       username: localStorage.getItem("UserName"),
       accesstype: "patient"

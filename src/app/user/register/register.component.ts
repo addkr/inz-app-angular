@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/shared/user.model';
 import { Router } from '@angular/router';
 import { SharedResources } from 'src/app/shared/sharedResources';
+import { wsService } from 'src/app/shared/wsservice';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,7 @@ export class RegisterComponent implements OnInit {
   emailPattern = this.shared.emailPattern;
   passwordPattern = this.shared.passwordPattern;
   showLoad: boolean = false;
-  constructor(private userService: UserService, private toastr: ToastrService, private router: Router) { }
+  constructor(private userService: UserService, private toastr: ToastrService, private router: Router, private wsservice: wsService) { }
 
   ngOnInit() {
     this.resetForm();

@@ -4,6 +4,7 @@ import { UserService } from "../shared/user.service";
 import { tap }  from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import {Http, Headers, RequestOptions} from '@angular/http';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -15,6 +16,9 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(req.clone());
 
         if (localStorage.getItem('userToken') != null) {
+            /* const clonedreq = req.clone({
+                headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
+            }); */
             const clonedreq = req.clone({
                 headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
             });

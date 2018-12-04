@@ -7,16 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PublicPageComponent implements OnInit {
 
-  authorized: boolean;
+  authorized: boolean = false;
   constructor() {
-    this.checkAuthorization();
+    //this.checkAuthorization();
+    if(localStorage.getItem("userToken") == null){
+      console.log("not authorized: " + localStorage.getItem("userToken"))
+      this.authorized = false;
+    }else{
+      this.authorized = true;
+      console.log("authorized: " + localStorage.getItem("userToken"))
+    }
    }
 
   checkAuthorization(){
     if(localStorage.getItem("userToken") == null){
+      console.log("not authorized: " + localStorage.getItem("userToken"))
       this.authorized = false;
     }else{
       this.authorized = true;
+      console.log("authorized: " + localStorage.getItem("userToken"))
     }
   }
 

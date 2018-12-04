@@ -5,6 +5,7 @@ import { UserPersonalData } from 'src/app/shared/user.model';
 import { DateTimeModel } from 'src/app/shared/appointment-model';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nurse-panel',
@@ -25,7 +26,7 @@ export class NursePanelComponent implements OnInit {
   dateTimeModel = new DateTimeModel();
   add = false;
 
-  constructor(private wsservice: wsService, private router: Router) {
+  constructor(private wsservice: wsService, private router: Router, private toastr: ToastrService) {
     this.getPatients();
     this.getFreeTerms();
     this.getAppointments()
@@ -33,6 +34,19 @@ export class NursePanelComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  showToast(){
+    this.toastr.success('Funkcja chwilowo niedostępna');
+  }
+
+  
+  logout(){
+    if(confirm("Czy chcesz się wylogować?")){
+      localStorage.removeItem("userToken");
+      this.router.navigate(["/publicpage"]);
+    }
+  }
+  
   cancel(id,usdate,date,status){    
     if(new Date(usdate).getTime() > Date.now() && status == "brak"){
         console.log(status)
@@ -74,12 +88,6 @@ export class NursePanelComponent implements OnInit {
   }
 
   
-  logout(){
-    if(confirm("Czy chcesz się wylogować?")){
-      localStorage.removeItem("userToken");
-      this.router.navigate(["/publicpage"]);
-    }
-  }
 
   getAppointments(){
     var body = {
