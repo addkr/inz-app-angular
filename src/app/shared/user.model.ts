@@ -18,6 +18,8 @@ export class UserPersonalData {
     datecreated: string;
     username: string;
     accesstype: string;
+    doctorusername: string;
+    nurseusername: string;
 }
 
 export class User {
@@ -31,4 +33,6 @@ export class AccessType{
     username: string;
     accesstype: string;
 }
+
+
 

@@ -1,9 +1,26 @@
+<div class="row" style="padding-top:5px;">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab"><a routerLink='/login' routerLinkActive='active'>ZALOGUJ</a></li>
+        <li class="tab"><a routerLink='/register' routerLinkActive='active' >ZAREJESTRUJ</a></li>
+        <li class="tab"><a routerLink='/publicpage' routerLinkActive='active'>AKTUALNOŚCI</a></li>      
+      </ul>
+    </div>
+</div>
+
+<!-- progressbar -->
+<div class="row">
+  <div class="col s8 offset-s2" *ngIf="showLoad">
+    <div class="progress" >
+      <div class="indeterminate"></div>
+  </div> 
+  </div>
+</div>
+<!-- endof progressbar -->
+
 <div class="row">
   <div class="col s8 offset-s4">
     <div class="card">
-        <div class="progress" *ngIf="showLoad">
-            <div class="indeterminate"></div>
-        </div>
       <form class="col s12 white" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
         <div class="row">
           <div class="input-field col s6">

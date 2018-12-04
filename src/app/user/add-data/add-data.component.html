@@ -1,10 +1,16 @@
+<!-- progressbar -->
+<div class="row">
+  <div class="col s8 offset-s2" *ngIf="showLoad">
+    <div class="progress" >
+      <div class="indeterminate"></div>
+  </div> 
+  </div>
+</div>
+<!-- endof progressbar -->
+
 <div class="row">
   <div class="col s8 offset-s2">
     <div class="card">
-     <!--  <div class="sm-jumbotron center-align">
-        <i class="material-icons ">account_circle</i>
-      </div> -->
-     
       <form materialize class="col s12" #userDataForm="ngForm" (ngSubmit)="OnSubmit(userDataForm)">
         <div class="row">
           <div class="input-field col s6">
@@ -29,6 +35,7 @@
         <div class="row">
           <div class="input-field col s6" >
             <select materialize="material_select"  [(ngModel)]="userData.sex" name="sex" #sex="ngModel">
+              <option>Wybierz</option>
               <option  *ngFor="let option of sexoptions" [value]="option.value" >
                   {{option.value}}
               </option> 
@@ -37,13 +44,13 @@
           </div>
           <div class="input-field col s6" >
               <select materialize="material_select" [(ngModel)]="userData.citizenship" name="citizenship" #citizenship="ngModel" (ngModelChange)="onChange($event)">
+                <option>Wybierz</option>
                 <option  *ngFor="let option of citizenshipoptions" [value]="option.value">
                     {{option.value}}
                 </option> 
               </select>
               <label>Narodowość</label>  
-            </div>
-         
+            </div>         
         </div> 
         <div class="row">
             <div class="input-field col s6">
@@ -62,7 +69,7 @@
         </div>
         <div class="row">
             <div class="input-field col s6">
-              <input #pickadate [materializeParams]="translateToPolish" materialize="pickadate" class="datepicker" type="text" name="dateofbirth" #dateofbirth="ngModel" [(ngModel)]="userData.dateofbirth" required>
+              <input #pickadate [materializeParams]="translateDatePicker" materialize="pickadate" class="datepicker" type="text" name="dateofbirth" #dateofbirth="ngModel" [(ngModel)]="userData.dateofbirth" required>
               <label data-error="Pole wymagane!">Data urodzenia</label>
             </div>
             <div class="input-field col s6">
@@ -90,8 +97,34 @@
               <label data-error="Pole wymagane!">Miasto</label>
             </div>
             <div class="input-field col s6">
-              <input type="text" name="country" #country="ngModel" [(ngModel)]="userData.country">
-              <label>Kraj</label>
+              <input type="text" name="country" #country="ngModel" [(ngModel)]="userData.country" required>
+              <label data-error="Pole wymagane!">Kraj</label>
+            </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6" >
+            <select materialize="material_select"  [(ngModel)]="userData.doctorusername" name="doctorusername" #doctorusername="ngModel" required>
+              <option>Wybierz</option>
+              <option  *ngFor="let option of doctors" [value]="option.username" >
+                {{option.forename}} {{option.lastname}}
+              </option> 
+            </select>
+            <label data-error="Pole wymagane!">Lekarz</label>  
+          </div>
+          <div class="input-field col s6" >
+              <select materialize="material_select" [(ngModel)]="userData.nurseusername" name="nurseusername" #nurseusername="ngModel" required>
+                <option>Wybierz</option>
+                <option  *ngFor="let option of nurses" [value]="option.username">
+                    {{option.forename}} {{option.lastname}} 
+                </option> 
+              </select>
+              <label data-error="Pole wymagane!">Pielęgniarka</label>  
+          </div>         
+        </div> 
+        <div class="row" *ngIf="reception">
+            <div class="input-field col s6" >
+                <input type="text" name="username" #username="ngModel" [(ngModel)]="userData.username" required>
+                <label data-error="Pole wymagane!">Login</label> 
             </div>
         </div>
         <div class="row">
@@ -103,5 +136,6 @@
     </div>
   </div>
 </div>
+<router-outlet></router-outlet>
 
 

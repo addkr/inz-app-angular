@@ -1,7 +1,7 @@
 export class SharedResources{
 
     endpoint = "http://localhost:52084/";
-   translateToPolish = [{format:'yyyy-mm-dd', selectYears: 130, selectMonths: true,  
+   translateDatePicker = [{format:'yyyy-mm-dd', selectYears: 130, selectMonths: true,  
   monthsFull: [ 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
   'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień' ] ,
   monthsShort: [ 'Sty.', 'Lu.', 'Ma.', 'Kwi.', 'Maj', 'Cze.', 'Lip.', 'Sie.', 'Wrz.', 'Paź.', 'Lis.', 'Gru.' ],
@@ -19,5 +19,9 @@ export class SharedResources{
     sexoptions = [{'value':'M'},{'value':'K'},{'value':'Inne'}];
     loginOptions =  [{'name':'Pielęgniarka/położna','value':'nurse'},{'name':'Lekarz','value':'doctor'},{'name':'Pracownik recepcji','value':'reception'},{'name':'Pacjent','value':'patient'},{'name':'Administrator','value':'admin'}];
     medicalPersonel = [{'name':'Pielęgniarka/położna','value':'nurse'},{'name':'Lekarz','value':'doctor'},{'name':'Pracownik recepcji','value':'reception'}];
+    
+    emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+    passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$';
+
 }
 

@@ -1,3 +1,156 @@
-<p>
-  reception-panel works!
-</p>
+<div class="row" style="padding-top:5px;">
+    <div class="nav-content">
+      <div class="col s12">
+        <ul class="tabs" materialize="tabs">
+          <li class="tab col s3"><a href="#lastappointments">Wyszukaj wizytę</a></li>
+          <li class="tab col s3"><a href="#addappointment">Dodaj wizytę</a></li>
+          <li class="tab col s3" ><a routerLink='/addData' routerLinkActive='active'>Dodaj pacjenta</a></li> 
+          <li class="tab col s3" (click)="logout()"><a >Wyloguj</a></li>       
+        </ul>
+      </div>
+    </div>
+</div>
+
+<!-- progressbar -->
+<div class="row">
+    <div class="col s8 offset-s2" *ngIf="showLoad">
+      <div class="progress" >
+        <div class="indeterminate"></div>
+    </div> 
+    </div>
+  </div>
+  <!-- endof progressbar -->
+
+ <!-- #region lastappointments -->
+ <div id="lastappointments" > 
+    <div class="row" >
+        <div class="col s12 offset-s3">
+              <div class="row">
+                  <div class="input-field col s6">
+                      <input class="validate" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="pesel" minlength="11" maxlength="11" required>
+                      <label data-error="Niepoprawny pesel!">Pesel</label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6 offset-s2">
+                      <button  class="btn waves-effect waves-light" (click)="getPatientAppointments(pesel)">Wyszukaj pacjenta</button>
+                  </div>
+              </div>
+        </div>
+        <div class="col s8 offset-s2">
+            <div class="row" >
+                <ul class="collection" *ngFor="let option of lastappointments" >
+                    <li class="collection-item">
+                      <div>
+                        <label><span>Data: </span> {{option.date}} </label>
+                        <label><span>Status: </span> {{option.description}} </label>
+                      </div>
+                      <div>
+                          {{option.speciality}} {{option.doctorforename}} {{option.doctorlastname}} 
+                      </div>
+                      <div>
+                          Pacjent:  {{patientForeName}} {{patientLastName}} 
+                      </div> 
+                      <div>
+                          <a (click)="cancel(option.id,option.usdate,option.date,option.description)" class="secondary-content" style="color:#ff2010">| ODWOŁAJ </a>
+                          <a (click)="confirm(option.id,option.usdate,option.date,option.description)" class="secondary-content" > POTWIERDŹ |</a>
+                      </div>
+                    </li>
+                </ul>
+                <ul class="collection" *ngFor="let appointmentnurse of lastappointmentsnurse" >
+                        <li class="collection-item">
+                          <div>
+                            <label><span>Data: </span> {{appointmentnurse.date}} </label>
+                            <label><span>Status: </span> {{appointmentnurse.description}} </label>
+                          </div>
+                          <div>
+                              {{appointmentnurse.speciality}} {{appointmentnurse.doctorforename}} {{appointmentnurse.doctorlastname}} 
+                          </div>
+                          <div>
+                              <a (click)="cancel(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)" class="secondary-content" style="color:#ff2010">| ODWOŁAJ </a>
+                              <a (click)="confirm(appointmentnurse.id,appointmentnurse.usdate,appointmentnurse.date,appointmentnurse.description)" class="secondary-content" > POTWIERDŹ |</a>
+                          </div>
+                        </li>
+                </ul>
+              </div>
+        </div>
+      </div>
+</div>
+<!-- #endregion -->
+
+<!-- #region addappointment -->
+
+<div class="row" id="addappointment" >
+  <div class="col s12 offset-s3">
+        <div class="row">
+            <div class="input-field col s6">
+                <input class="validate" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="pesel" minlength="11" maxlength="11" required>
+                <label data-error="Niepoprawny pesel!">Pesel</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s2">
+                <button class="btn waves-effect waves-light" (click)="check(pesel)">Wyszukaj pacjenta</button>
+            </div>
+        </div>
+  </div>
+    <form class="col s12 offset-s3" #newAppointment="ngForm" (ngSubmit)="OnSubmit(newAppointment)">         
+        <div class="row">
+            <div class="col s6">
+              <label>Pacjent</label>
+                <p >{{patientForeName}}  {{patientLastName}} </p>
+            </div>
+        </div>
+          <div class="row" *ngIf="patientsLoaded">
+              <div class="input-field col s6" >
+                  <select materialize="material_select" [(ngModel)]="appointmentModel.medicusername" name="medicusername" (ngModelChange)="onDoctorsChange($event)" #medicusername="ngModel" required>
+                    <option>Wybierz</option>
+                    <option  *ngFor="let option of doctorsBySpeciality" [value]="option.doctorusername">
+                        {{option.doctorforename}} {{option.doctorlastname}}
+                    </option> 
+                  </select>
+                  <label>Wybierz lekarza</label> 
+                </div> 
+          </div>
+          <div class="row" *ngIf="dataLoaded">
+              <div class="input-field col s6"  >
+                  <select materialize="material_select" [(ngModel)]="specialities.name" name="name" #name="ngModel" (ngModelChange)="onSpecialityChange($event)" required>
+                    <option  *ngFor="let option of specList" [value]="option" >
+                      {{option}}
+                    </option> 
+                  </select>
+                  <label>Wybierz specjalność</label>  
+                </div>
+          </div>
+          <div class="row" *ngIf="doctorsLoaded">
+              <div class="input-field col s6" >
+                  <select materialize="material_select" [(ngModel)]="appointmentModel.medicusername" name="medicusername" (ngModelChange)="onDoctorsChange($event)" #medicusername="ngModel" required>
+                    <option>Wybierz</option>
+                    <option  *ngFor="let option of doctorsBySpeciality" [value]="option.doctorusername">
+                        {{option.doctorforename}} {{option.doctorlastname}}
+                    </option> 
+                  </select>
+                  <label>Wybierz lekarza</label> 
+                </div> 
+          </div>
+          <div class="row" *ngIf="freeTermsLoaded">  
+              <div class="input-field col s6" >
+                  <select materialize="material_select" [ngModelOptions]="{standalone: true}" (ngModelChange)="onDateChange($event)" [(ngModel)]="freeTerm"   required>
+                    <option>Wybierz</option>
+                    <option  *ngFor="let term of freeTerms" [value]="term.id">
+                        {{term.date}}
+                    </option> 
+                  </select>
+                  <label>Wybierz datę</label>  
+              </div>  
+            </div>
+            <div class="row">
+                <div class="input-field col s6 offset-s2">
+                  <button [disabled]="!newAppointment.valid" class="btn waves-effect waves-light" type="submit">Umów wizytę</button>
+                </div>
+            </div>
+          </form>
+  </div>
+
+  <!-- #endregion -->
+

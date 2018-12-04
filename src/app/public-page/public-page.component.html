@@ -1,5 +1,12 @@
-
-
+<div class="row" style="padding-top:5px;">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab" *ngIf="!authorized"><a routerLink='/login' routerLinkActive='active'>ZALOGUJ</a></li>
+        <li class="tab" *ngIf="!authorized"><a routerLink='/register' routerLinkActive='active' >ZAREJESTRUJ</a></li>
+        <li class="tab" *ngIf="authorized"><a (click)="logout()">WYLOGUJ</a></li>     
+      </ul>
+    </div>
+</div>
 <div materialize="carousel"  class="carousel center" data-indicators="true">
   <!-- <div>
     <a class="carousel-item red white-text" href="#one!">zdjecie<img src="/../assets/images/1.JPG"></a>

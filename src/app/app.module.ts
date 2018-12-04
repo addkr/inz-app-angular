@@ -6,14 +6,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { UserComponent } from './user/user.component';
-import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './user/register/register.component';
 import { LoginComponent } from './user/login/login.component';
 import { UserService } from './shared/user.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { EventSchedulerComponent } from './event-scheduler/event-scheduler.component';
 import { AddDataComponent } from './user/add-data/add-data.component';
 import { HttpModule } from '@angular/http';
 import { MaterializeModule } from 'angular2-materialize';
@@ -22,37 +19,32 @@ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { DoctorPanelComponent } from './medicalPersonel/doctor-panel/doctor-panel.component';
 import { NursePanelComponent } from './medicalPersonel/nurse-panel/nurse-panel.component';
 import { ReceptionPanelComponent } from './medicalPersonel/reception-panel/reception-panel.component';
-import { CreateAppointmentComponent } from './user/create-appointment/create-appointment.component';
+import { PatientPanelComponent } from './patient-panel/patient-panel.component';
 
 const appRoutes: Routes = 
 [{path: 'register', component: RegisterComponent},
 {path: 'login', component: LoginComponent},
-{path: 'home', component: HomePageComponent, canActivate:[AuthGuard]},
-{ path : '', redirectTo:'/home', pathMatch : 'full'},
-{path:'scheduler', component: EventSchedulerComponent},
+{ path : '', redirectTo:'/publicpage', pathMatch : 'full'},
 {path: 'addData', component: AddDataComponent},
 {path: 'publicpage', component: PublicPageComponent},
-{path: 'adminpanel',component: AdminPanelComponent},
-{path: 'doctorpanel',component: DoctorPanelComponent},
-{path: 'nursepanel',component: NursePanelComponent},
-{path: 'receptionpanel',component: ReceptionPanelComponent},
-{path: 'appointment',component: CreateAppointmentComponent}]
+{path: 'adminpanel',component: AdminPanelComponent, canActivate:[AuthGuard]},
+{path: 'doctorpanel',component: DoctorPanelComponent, canActivate:[AuthGuard]},
+{path: 'nursepanel',component: NursePanelComponent, canActivate:[AuthGuard]},
+{path: 'receptionpanel',component: ReceptionPanelComponent, canActivate:[AuthGuard]},
+{path: 'patientpanel',component: PatientPanelComponent, canActivate:[AuthGuard]}]
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    UserComponent,
     LoginComponent,
-    HomePageComponent,
-    EventSchedulerComponent,
     AddDataComponent,
     PublicPageComponent,
     AdminPanelComponent,
     DoctorPanelComponent,
     NursePanelComponent,
     ReceptionPanelComponent,
-    CreateAppointmentComponent
+    PatientPanelComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -65,7 +57,8 @@ const appRoutes: Routes =
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     HttpModule,
-    MaterializeModule
+    MaterializeModule,
+    PopupModule.forRoot()
   ],
   providers: [UserService, ,AuthGuard,
     ,

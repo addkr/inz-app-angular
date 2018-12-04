@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
      localStorage.setItem('userToken',data.access_token);
      this.getUserData(userForm.value.accesstype);   
      this.showLoad = false;
+     this.toastr.success('Zalogowano do systemu');
    },
    (err : HttpErrorResponse)=>{
      this.isLoginError = true;
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit {
       this.userService.getUserClaims().subscribe((data: any) => {
         localStorage.setItem('UserName',data.UserName);
         localStorage.setItem('Email',data.Email);
+        localStorage.setItem("AccessType",accesstype);
         this.CheckUserData(accesstype,data["UserName"]);
       });      
  }
@@ -54,33 +56,36 @@ export class LoginComponent implements OnInit {
   CheckUserData(accesstype,username){
     this.userService.CheckUserData(accesstype,username).subscribe((data: any) => {
       console.log(data)
-      if(data==""){
-        this.toastr.success('Zarejestrowano nowego użytkownika');
-      }else{
-        
+      if(data==""){        
+        if(accesstype == "patient"){
+          console.log(accesstype)
+          this.goTo("");
+        }else{
+          this.toastr.success('Brak dostępu do żądanego zasobu');
+        }        
+      }else{        
         var json = JSON.parse(data);
-        this.navigate(json.accesstype);
-      }
-      
+        this.goTo(json.accesstype);
+      }     
      
     }, (error) => {
       console.log(error);
       if(error=="Dane mają wartość Null. Ta metoda lub właściwość nie może być wywołana na wartościach zerowych."){
         console.log("Użytkownik nie istnieje lub wprowadzone dane są niepoprawne");
         //this.router.navigate(['/addData']);
-        this.toastr.error(error.Errors[0]);
+        
       }
     });
   } 
 
-  navigate(access){
+  goTo(access){
     if(access==""){
       console.log("Brak danych użytkownika");
       this.router.navigate(['/addData']);
     }else if (access == "doctor"){
       this.router.navigate(['/doctorpanel']);
     }else if (access == "patient"){
-      this.router.navigate(['/home']);
+      this.router.navigate(['/patientpanel']);
     }else if (access == "nurse"){
       this.router.navigate(['/nursepanel']);
     }else if (access == "reception"){

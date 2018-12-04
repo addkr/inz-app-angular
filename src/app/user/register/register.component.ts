@@ -4,6 +4,7 @@ import { UserService } from '../../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/shared/user.model';
 import { Router } from '@angular/router';
+import { SharedResources } from 'src/app/shared/sharedResources';
 
 @Component({
   selector: 'app-register',
@@ -11,10 +12,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  
+
+  shared = new SharedResources();
   user: User;
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
-  passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$';
+  emailPattern = this.shared.emailPattern;
+  passwordPattern = this.shared.passwordPattern;
   showLoad: boolean = false;
   constructor(private userService: UserService, private toastr: ToastrService, private router: Router) { }
 

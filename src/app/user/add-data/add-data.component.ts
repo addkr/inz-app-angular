@@ -1,11 +1,13 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { UserPersonalData, User } from 'src/app/shared/user.model';
+import { Component, OnInit } from '@angular/core';
+import { UserPersonalData } from 'src/app/shared/user.model';
 import { NgForm } from '@angular/forms';
 import { SharedResources } from 'src/app/shared/sharedResources';
 import { UserService } from '../../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { wsService } from '../../shared/wsservice';
 import { Router } from '@angular/router';
+import { MedicalPersonelModel } from 'src/app/shared/medical-personel-model';
+
 @Component({
   selector: 'app-add-data',
   templateUrl: './add-data.component.html',
@@ -15,19 +17,30 @@ export class AddDataComponent implements OnInit {
   userData: UserPersonalData;
   
   shared = new SharedResources();
-  translateToPolish = this.shared.translateToPolish;
+  translateDatePicker = this.shared.translateDatePicker;
   educationOption = this.shared.educationOption;
   citizenshipoptions = this.shared.citizenshipoptions;
   sexoptions = this.shared.sexoptions;
-
-  constructor(private router: Router, private userService: UserService, private toastr: ToastrService, private wsservice: wsService) { }
+  doctors: any;
+  private endpoint = this.shared.endpoint;
+  medicalPersonelModel = new MedicalPersonelModel();
+  nurses: any;
+  showLoad = false;
+  reception = false;
+  constructor(private router: Router, private userService: UserService, private toastr: ToastrService, private wsservice: wsService) {
+    this.getDoctors();
+    this.getNurses();
+   }
 
   ngAfterViewInit(){
   }
 
   ngOnInit() {
     this.resetForm();
-    
+    if(localStorage.getItem("AccessType")=="reception"){
+      console.log("AccessType: reception")
+      this.reception = true;
+    }
   }
 
   onChange(value){
@@ -60,12 +73,23 @@ export class AddDataComponent implements OnInit {
     country:'',
     datecreated:'',
     username: '',
-    accesstype: ''
+    accesstype: '',
+    doctorusername:'',
+    nurseusername:''
     }
   }
 
 
   OnSubmit(form: NgForm) {
+    var username, email;
+    if(this.reception == true){
+      username = this.userData.username;
+      email = "brak";
+    }else{
+      username = localStorage.getItem("UserName");
+      email = localStorage.getItem("Email");
+    }
+    this.showLoad = true;
     const body: UserPersonalData = {
       forename: this.userData.forename,
       secondname: this.userData.secondname,
@@ -76,7 +100,7 @@ export class AddDataComponent implements OnInit {
       education: this.userData.education,
       pesel: this.userData.pesel,
       dateofbirth: this.userData.dateofbirth,
-      email: localStorage.getItem("Email"),
+      email: email,
       phoneno: this.userData.phoneno,
       street: this.userData.street,
       housenumber: this.userData.housenumber,
@@ -84,45 +108,42 @@ export class AddDataComponent implements OnInit {
       city: this.userData.city,
       country: this.userData.country,
       datecreated: new Date().toLocaleString().toString(),
-      username : localStorage.getItem("UserName"),
-      accesstype: "patient"
+      username : username,
+      accesstype: "patient",
+      doctorusername: this.userData.doctorusername,
+      nurseusername: this.userData.nurseusername
     }
     this.wsservice.postData(body, "http://localhost:52084/patients/Create").subscribe((data) => {
         console.log(data);
+        this.showLoad = false;
+        this.toastr.success('Dodano dane');
         this.router.navigate(['/home']);
     }, (error) => {
         console.log(error);
+        this.toastr.success('Wystąpił błąd');
+        this.showLoad = false;
     });
     
   }
 
-  getUserData(){
-  
-    this.userService.getUserClaims().subscribe((data: any) => {
-       localStorage.setItem('UserName',data.UserName);
-       localStorage.setItem('Email',data.Email);
-       //this.CheckUserData(data["UserName"]);
-    });
-    
-   }
+   getDoctors(){
+    this.wsservice.getData(this.endpoint+"api/doctors").subscribe((success)=>{
+      this.doctors = JSON.parse(success["_body"]);    
+      console.log(this.doctors)
+    },(error)=>{
+      console.log(error)
+    })
+  }
 
-  /* CheckUserData(username){
-    this.userService.CheckUserData(username).subscribe((data: any) => {
-      console.log(data);
-      if(data==""){
-        console.log("Brak danych użytkownika");
-        this.router.navigate(['/addData']);
-      }else{
-        this.router.navigate(['/home']);
-      }
-      //this.router.navigate(['/home']);
-    }, (error) => {
-      console.log(error);
-      if(error=="Dane mają wartość Null. Ta metoda lub właściwość nie może być wywołana na wartościach zerowych."){
-        console.log("Użytkownik nie istnieje lub wprowadzone dane są niepoprawne");
-        //this.router.navigate(['/addData']);
-      }
-    });
-  }  */
+  getNurses(){
+    this.wsservice.getData(this.endpoint+"api/nurses").subscribe((success)=>{
+      this.nurses = JSON.parse(success["_body"]);    
+      console.log(this.doctors)
+    },(error)=>{
+      console.log(error)
+    })
+  }
+
+ 
   
 }

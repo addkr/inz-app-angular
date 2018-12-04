@@ -7,8 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PublicPageComponent implements OnInit {
 
-  constructor() { }
+  authorized: boolean;
+  constructor() {
+    this.checkAuthorization();
+   }
 
+  checkAuthorization(){
+    if(localStorage.getItem("userToken") == null){
+      this.authorized = false;
+    }else{
+      this.authorized = true;
+    }
+  }
+
+  logout(){
+    localStorage.removeItem("userToken");
+    this.checkAuthorization();
+  }
   ngOnInit() {
   }
 
